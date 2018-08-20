@@ -1,0 +1,23 @@
+{
+  "name": "frontend-nanodegree-arcade-game",
+  "version": "1.0.0",
+  "description": "Fend arcade game",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel --presets env src -d js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udacity/frontend-nanodegree-arcade-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/udacity/frontend-nanodegree-arcade-game/issues"
+  },
+  "homepage": "https://github.com/udacity/frontend-nanodegree-arcade-game#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
