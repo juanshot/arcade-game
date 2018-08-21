@@ -19,3 +19,7 @@ Right Arrow : moves right
 Up Arrow : moves up
 Down Arrow : moves down
 
+## Dependencies
+>"babel-cli": "^6.26.0",
+>"babel-preset-env": "^1.7.0"
+

@@ -22,7 +22,7 @@ var Game = function () {
         this.lifes = 3;
         this.gems = 0;
         this.interval = null;
-        // References of the html elements
+        // References of html elements
         this.gameModal = document.querySelector('#initialModal');
         this.successModal = document.querySelector('#successModal');
         this.gameOverModal = document.querySelector('#gameOverModal');
@@ -40,7 +40,7 @@ var Game = function () {
                 _this.startClock();
             });
         });
-        // CLose modal button listeners
+        // Adding events to close buttons
         this.closeBtns = document.querySelectorAll('.close');
         this.closeBtns.forEach(function (closeBtn) {
             closeBtn.addEventListener('click', function () {
@@ -79,6 +79,10 @@ var Game = function () {
             this.gems++;
             this.printGems();
         }
+        /**
+         * @description prints gems to the dom
+         */
+
     }, {
         key: 'printGems',
         value: function printGems() {
@@ -185,6 +189,10 @@ var Game = function () {
                 this.openModal('gameOver');
             }
         }
+        /**
+         * @description method called to restart the game
+         */
+
     }, {
         key: 'restartValues',
         value: function restartValues() {
