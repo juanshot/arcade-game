@@ -61,6 +61,13 @@ button.button:hover {
     flex-wrap: wrap;
     justify-content: center;
 }
+.audio-wrapper {
+    position: fixed;
+    float: left;
+}
+.audio-wrapper audio {
+    opacity: 0;
+}
 .stats {
     width: 40%;
 }

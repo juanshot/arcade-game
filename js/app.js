@@ -22,18 +22,30 @@ var Game = function () {
         this.lifes = 3;
         this.gems = 0;
         this.interval = null;
-        this.gameModal = document.querySelector('.modal');
-        this.startBtn = document.querySelector('.button');
+        // References of the html elements
+        this.gameModal = document.querySelector('#initialModal');
+        this.successModal = document.querySelector('#successModal');
+        this.gameOverModal = document.querySelector('#gameOverModal');
+        this.lifeElement = document.querySelector('.lifes');
+        this.startBtns = document.querySelectorAll('.button-start');
         this.timer = document.querySelector('.timer');
         this.gemElement = document.querySelector('.gems');
-        this.lifeElement = document.querySelector('.lifes');
-        this.startBtn.addEventListener('click', function () {
-            _this.startClock();
-            _this.closeModal();
+        this.audio = document.querySelector('audio');
+        this.resultElement = document.querySelector('result-stats');
+        // adding listeners
+        // Adding listener to start button in modals
+        this.startBtns.forEach(function (startBtn) {
+            startBtn.addEventListener('click', function () {
+                _this.closeModal();
+                _this.startClock();
+            });
         });
-        this.closeBtn = document.querySelector('.close');
-        this.closeBtn.addEventListener('click', function () {
-            _this.closeModal();
+        // CLose modal button listeners
+        this.closeBtns = document.querySelectorAll('.close');
+        this.closeBtns.forEach(function (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                _this.closeModal();
+            });
         });
     }
     /**
@@ -65,6 +77,11 @@ var Game = function () {
         key: 'addGem',
         value: function addGem() {
             this.gems++;
+            this.printGems();
+        }
+    }, {
+        key: 'printGems',
+        value: function printGems() {
             var fragment = document.createDocumentFragment();
             for (var i = 0; i < this.gems; i++) {
                 var gemImg = document.createElement('img');
@@ -115,13 +132,28 @@ var Game = function () {
             this.lifeElement.appendChild(fragment);
         }
         /**
+         * @description plays effect sound of movement
+         */
+
+    }, {
+        key: 'playSound',
+        value: function playSound() {
+            this.audio.play();
+        }
+        /**
          * @description closes the main modal
          */
 
     }, {
         key: 'openModal',
-        value: function openModal() {
-            this.gameModal.style.display = "block";
+        value: function openModal(type) {
+            if (type === 'initial') {
+                this.gameModal.style.display = "block";
+            } else if (type === 'success') {
+                this.successModal.style.display = "block";
+            } else if (type === 'gameOver') {
+                this.gameOverModal.style.display = 'block';
+            }
         }
         /**
          * @description closes the main modal
@@ -130,7 +162,10 @@ var Game = function () {
     }, {
         key: 'closeModal',
         value: function closeModal() {
-            this.gameModal.style.display = "none";
+            var modals = document.querySelectorAll('.modal');
+            modals.forEach(function (modal) {
+                modal.style.display = 'none';
+            });
         }
         /**
          * @description finishes the game
@@ -140,7 +175,26 @@ var Game = function () {
     }, {
         key: 'finishGame',
         value: function finishGame(mode) {
-            console.log(mode);
+            if (mode === 'win') {
+                document.querySelector('.result-time').textContent = this.min + ':' + (this.sec > 10 ? this.sec : '0'.concat(this.sec));
+                document.querySelector('.result-lifes').textContent = this.lifes;
+                document.querySelector('.result-gems').textContent = this.gems;
+                this.restartValues();
+                this.openModal('success');
+            } else {
+                this.openModal('gameOver');
+            }
+        }
+    }, {
+        key: 'restartValues',
+        value: function restartValues() {
+            this.min = 0;
+            this.sec = 0;
+            this.lifes = 3;
+            this.gems = 0;
+            clearInterval(this.interval);
+            this.printGems();
+            this.printLifes();
         }
     }]);
 
@@ -282,6 +336,7 @@ var Player = function (_Character2) {
                     break;
                 case 'up':
                     this.y = this.y - 85;
+                    game.playSound();
                     break;
                 case 'right':
                     this.x = this.x + 100;
@@ -313,7 +368,7 @@ allEnemies.push(enemy1, enemy2, enemy3, enemy4);
 // instantiating player
 var player = new Player(200, 380, 'images/char-boy.png');
 var game = new Game();
-game.openModal();
+game.openModal('initial');
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {

@@ -8,18 +8,30 @@ class Game {
         this.lifes = 3;
         this.gems = 0;
         this.interval = null;
-        this.gameModal = document.querySelector('.modal');
-        this.startBtn = document.querySelector('.button');
+        // References of html elements
+        this.gameModal = document.querySelector('#initialModal');
+        this.successModal = document.querySelector('#successModal');
+        this.gameOverModal = document.querySelector('#gameOverModal');
+        this.lifeElement = document.querySelector('.lifes');
+        this.startBtns = document.querySelectorAll('.button-start');
         this.timer = document.querySelector('.timer');
         this.gemElement = document.querySelector('.gems');
-        this.lifeElement = document.querySelector('.lifes');
-        this.startBtn.addEventListener('click', () => {
-            this.startClock();
-            this.closeModal();
+        this.audio = document.querySelector('audio');
+        this.resultElement = document.querySelector('result-stats');
+        // adding listeners
+        // Adding listener to start button in modals
+        this.startBtns.forEach(startBtn => {
+            startBtn.addEventListener('click', () => {
+                this.closeModal();
+                this.startClock();
+            })
         });
-        this.closeBtn = document.querySelector('.close');
-        this.closeBtn.addEventListener('click', () => {
-            this.closeModal();
+        // Adding events to close buttons
+        this.closeBtns = document.querySelectorAll('.close');
+        this.closeBtns.forEach(closeBtn => {
+            closeBtn.addEventListener('click', () => {
+                this.closeModal();
+            })
         });
     }
     /**
@@ -42,6 +54,12 @@ class Game {
      */
     addGem () {      
         this.gems++
+        this.printGems()
+    }
+    /**
+     * @description prints gems to the dom
+     */
+    printGems () {
         let fragment = document.createDocumentFragment();
         for (let i = 0; i < this.gems; i++) {
             let gemImg = document.createElement('img');
@@ -86,23 +104,58 @@ class Game {
         this.lifeElement.appendChild(fragment);
     }
     /**
+     * @description plays effect sound of movement
+     */
+    playSound () {
+        this.audio.play()
+    }
+    /**
      * @description closes the main modal
      */
-    openModal () {
-        this.gameModal.style.display = "block";
+    openModal (type) {
+        if (type === 'initial') {
+            this.gameModal.style.display = "block";
+        } else if (type === 'success') {
+            this.successModal.style.display = "block";
+        } else if (type === 'gameOver') {
+            this.gameOverModal.style.display = 'block';
+        }
     }
     /**
      * @description closes the main modal
      */
     closeModal () {
-        this.gameModal.style.display = "none";
+        let modals = document.querySelectorAll('.modal');
+        modals.forEach((modal) => {
+            modal.style.display = 'none'
+        });
     }
     /**
      * @description finishes the game
      * @param  {string} mode receives 'win' or 'lose' depending on results 
      */
     finishGame (mode) {
-        console.log(mode);   
+        if (mode === 'win') {
+            document.querySelector('.result-time').textContent = `${this.min}:${this.sec > 10 ? this.sec : '0'.concat(this.sec)}`;
+            document.querySelector('.result-lifes').textContent = this.lifes;
+            document.querySelector('.result-gems').textContent =  this.gems;
+            this.restartValues();
+            this.openModal('success');
+        } else {
+            this.openModal('gameOver');
+        }
+    }
+    /**
+     * @description method called to restart the game
+     */
+    restartValues () {
+        this.min = 0;
+        this.sec = 0;
+        this.lifes = 3;
+        this.gems = 0;
+        clearInterval(this.interval); 
+        this.printGems();
+        this.printLifes()
     }
 }
 /**
@@ -205,6 +258,7 @@ class Player extends Character {
                 break;
             case 'up':
                 this.y = this.y - 85;
+                game.playSound()
                 break;
             case 'right':
                 this.x = this.x + 100;
@@ -231,7 +285,7 @@ allEnemies.push(enemy1, enemy2, enemy3, enemy4)
 // instantiating player
 const player = new Player(200, 380, 'images/char-boy.png');
 const game = new Game();
-game.openModal();
+game.openModal('initial');
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {

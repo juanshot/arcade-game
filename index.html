@@ -7,36 +7,83 @@
     <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 </head>
 <body>
-    <div id="dialogModal" class="modal">
+    <div class="audio-wrapper">
+        <audio controls
+        >
+            <source src="mp3/jump-effect.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
+    <div id="initialModal" class="modal">
         <div class="modal-content">
             <div class="contact-form">
             <a class="close">&times;</a>
             <h2>Fogger Game</h2><br>
             <p></p>
-            <button class="button">Start</button>
+            <div class="result-stats"></div>
+            <button class="button-start">Start</button>
             </div>
         </div>
     </div>
-    <div class="panel">
-            <div class="stats">
-                <div class="stats-list">
-                   <div class="stat-item">
-                       Time: 
-                       <div class="timer"></div>
-                   </div>
-                   <div class="stat-item">
-                        Lifes: 
-                        <div class="lifes">
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="contact-form">
+            <a class="close">&times;</a>
+            <h2>You have Won!!</h2><br>
+            <p>Resume:</p>
+            <div class="panel">
+                <div class="result">
+                    <div class="result-list">
+                        <div class="result-item">
+                            Time: 
+                            <span class="result-time"></span>
                         </div>
-                    </div>
-                    <div class="stat-item">
-                        Gems: 
-                        <div class="gems">
+                        <div class="result-item">
+                            Lifes: 
+                            <span class="result-lifes"></span>
+                        </div>
+                        <div class="result-item">
+                            Gems: <span class="result-gems"></span>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="button-start">Play Again</button>
+            </div>
         </div>
+    </div>
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <div class="contact-form">
+            <a class="close">&times;</a>
+            <h2>Game Over</h2><br>
+            <p></p>
+            <div class="result-stats"></div>
+            <button class="button-start">Play Again</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="stats">
+            <div class="stats-list">
+                <div class="stat-item">
+                    Time: 
+                    <div class="timer"></div>
+                </div>
+                <div class="stat-item">
+                    Lifes: 
+                    <div class="lifes">
+
+                    </div>
+                </div>
+                <div class="stat-item">
+                    Gems: 
+                    <div class="gems">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
